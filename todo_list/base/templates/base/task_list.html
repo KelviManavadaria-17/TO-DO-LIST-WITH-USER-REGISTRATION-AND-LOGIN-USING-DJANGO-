@@ -1,0 +1,66 @@
+{% extends 'base/main.html' %}
+{% block content %}
+<div class="header">
+    <h6>HELLO {{request.user|title}}</h6>
+    <h6>YOU HAVE <i>{{count}}</i> TASKS REMAINING</h6>
+
+
+
+<div>
+<hr>
+
+
+
+
+{%  if request.user.is_authenticated %}
+
+<p>{{request.user}}</p>
+
+<a href="{% url 'logout' %}" >LOGOUT</a>
+{% else %}
+<a href="{%  url 'login' %}">LOGIN</a>
+
+
+{% endif %}
+<hr>
+<a href="{% url 'task-create' %}">ADD TASK</a>
+<form action="" method="get">
+    <input type="text" name="search-area" value="{{search_input}}">
+    <input type="submit" value="SEARCH" class="btn-secondary">
+
+</form>
+
+
+
+
+<table>
+    <tr>
+        <th>ITEMS</th>
+        <th></th>
+        <th></th>
+
+    </tr>
+    {% for task in tasks%}
+    <tr>
+        {% if task.complete == True %}
+                    <td style="color: red;">{{task.title}}    COMPLETED</td>
+                    <td><a href="{% url 'task-update' task.id%}">EDIT</a></td>
+                    <td><a href="{% url 'task-delete' task.id %}">DELETE</a></td>
+
+        {% else %}
+                <td>{{task.title}}</td>
+                <td><a href="{% url 'task-update' task.id%}">EDIT</a></td>
+                <td><a href="{% url 'task-delete' task.id %}">DELETE</a></td>
+
+        {% endif %}
+
+        
+
+
+    </tr>
+    {%empty%}
+    <h3>NO ITEMS IN LIST</h3>
+    {%endfor%}
+</table>
+
+{%  endblock content %}
